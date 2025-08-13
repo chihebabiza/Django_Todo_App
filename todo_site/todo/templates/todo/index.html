@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo App</title>
+    <link rel="stylesheet" href="{% static 'todo/css/style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>Todo App</header>
+      <div class="inputField">
+        <form action="" method="POST" style="display: flex">
+          {% csrf_token %}
+          <input
+            type="text"
+            name="title"
+            placeholder="Add your new todo"
+            required
+          />
+          <button type="submit" class="active">
+            <i class="fas fa-plus"></i>
+          </button>
+        </form>
+      </div>
+      <ul class="todoList">
+        {% for task in tasks %}
+        <li>
+          {{ task.title }}
+          <span class="icon">
+            <a href="{% url 'delete_task' task.id %}"
+              ><i class="fas fa-trash"></i
+            ></a>
+          </span>
+        </li>
+        {% endfor %}
+      </ul>
+      <div class="footer">
+        <span
+          >You have <span class="pendingTasks">{{ tasks|length }}</span> pending
+          tasks</span
+        >
+        <a href="{% url 'clear_all_tasks' %}">
+          <button class="{% if tasks|length > 0 %}active{% endif %}">
+            Clear All
+          </button>
+        </a>
+      </div>
+    </div>
+  </body>
+</html>
